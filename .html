@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TroubleShooter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      color: #333;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #d9534f;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+      max-width: 600px;
+    }
+
+    select {
+      margin-top: 30px;
+      padding: 8px;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="error-title">ERROR CODE 1</h1>
+    <p id="error-message">You were redirected to this page because the website is not finished yet.</p>
+
+    <select onchange="changeLanguage(this.value)">
+      <option value="en">English</option>
+      <option value="nl">Nederlands</option>
+      <option value="fr">Français</option>
+    </select>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        title: "ERROR CODE 1",
+        message: "You were redirected to this page because the website is not finished yet."
+      },
+      nl: {
+        title: "FOUTCODE 1",
+        message: "U bent doorgestuurd naar deze pagina omdat de website nog niet klaar is."
+      },
+      fr: {
+        title: "CODE D'ERREUR 1",
+        message: "Vous avez été redirigé vers cette page car le site n'est pas encore terminé."
+      }
+    };
+
+    function changeLanguage(lang) {
+      document.getElementById("error-title").textContent = translations[lang].title;
+      document.getElementById("error-message").textContent = translations[lang].message;
+    }
+  </script>
+</body>
+</html>
