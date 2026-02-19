@@ -43,8 +43,9 @@
 </head>
 <body>
   <div class="container">
-    <h1 id="error-title">ERROR CODE 1</h1>
-    <p id="error-message">You were redirected to this page because the website is not finished yet.</p>
+    <h1 id="error-title">ERROR CODE</h1>
+    <p id="error-message">Loading…</p>
+    <p id="owner"></p>
 
     <select onchange="changeLanguage(this.value)">
       <option value="en">English</option>
@@ -54,25 +55,49 @@
   </div>
 
   <script>
+    // --- URL PARAMETER PARSER ---
+    const params = new URLSearchParams(window.location.search);
+
+    const errorCode = params.get("error_code") || "1";
+    const customTitle = params.get("title") || null;
+    const customDescription = params.get("description") || null;
+    const owner = params.get("owner") || null;
+
+    // --- TRANSLATIONS ---
     const translations = {
       en: {
-        title: "ERROR CODE 1",
-        message: "You were redirected to this page because the website is not finished yet."
+        title: customTitle || `ERROR CODE ${errorCode}`,
+        message: customDescription || "You were redirected to this page because the website is not finished yet.",
+        owner: owner ? `Reported by: ${owner}` : ""
       },
       nl: {
-        title: "FOUTCODE 1",
-        message: "U bent doorgestuurd naar deze pagina omdat de website nog niet klaar is."
+        title: customTitle || `FOUTCODE ${errorCode}`,
+        message: customDescription || "U bent doorgestuurd naar deze pagina omdat de website nog niet klaar is.",
+        owner: owner ? `Melding door: ${owner}` : ""
       },
       fr: {
-        title: "CODE D'ERREUR 1",
-        message: "Vous avez été redirigé vers cette page car le site n'est pas encore terminé."
+        title: customTitle || `CODE D'ERREUR ${errorCode}`,
+        message: customDescription || "Vous avez été redirigé vers cette page car le site n'est pas encore terminé.",
+        owner: owner ? `Signalé par: ${owner}` : ""
       }
     };
 
-    function changeLanguage(lang) {
-      document.getElementById("error-title").textContent = translations[lang].title;
-      document.getElementById("error-message").textContent = translations[lang].message;
+    // --- DEFAULT LANGUAGE ---
+    let currentLang = "en";
+
+    function applyText() {
+      document.getElementById("error-title").textContent = translations[currentLang].title;
+      document.getElementById("error-message").textContent = translations[currentLang].message;
+      document.getElementById("owner").textContent = translations[currentLang].owner;
     }
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      applyText();
+    }
+
+    // Apply on load
+    applyText();
   </script>
 </body>
 </html>
