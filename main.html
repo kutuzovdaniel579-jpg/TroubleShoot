@@ -47,7 +47,7 @@
     <p id="error-message">Loading…</p>
     <p id="owner"></p>
 
-    <select onchange="changeLanguage(this.value)">
+    <select id="lang-select" onchange="switchLanguage(this.value)">
       <option value="en">English</option>
       <option value="nl">Nederlands</option>
       <option value="fr">Français</option>
@@ -55,13 +55,29 @@
   </div>
 
   <script>
-    // --- URL PARAMETER PARSER ---
-    const params = new URLSearchParams(window.location.search);
+    // --- CUSTOM PARAM PARSER FOR ?lang=en?error_code=... FORMAT ---
+    function parseWeirdParams() {
+      const raw = window.location.search; // "?lang=en?error_code=12?title=..."
+      const clean = raw.startsWith("?") ? raw.substring(1) : raw;
 
-    const errorCode = params.get("error_code") || "1";
-    const customTitle = params.get("title") || null;
-    const customDescription = params.get("description") || null;
-    const owner = params.get("owner") || null;
+      const parts = clean.split("?"); 
+      const params = {};
+
+      parts.forEach(part => {
+        const [key, value] = part.split("=");
+        if (key && value) params[key] = decodeURIComponent(value);
+      });
+
+      return params;
+    }
+
+    const params = parseWeirdParams();
+
+    const lang = params.lang || "en";
+    const errorCode = params.error_code || "1";
+    const customTitle = params.title || null;
+    const customDescription = params.description || null;
+    const owner = params.owner || null;
 
     // --- TRANSLATIONS ---
     const translations = {
@@ -82,21 +98,21 @@
       }
     };
 
-    // --- DEFAULT LANGUAGE ---
-    let currentLang = "en";
+    let currentLang = translations[lang] ? lang : "en";
 
     function applyText() {
       document.getElementById("error-title").textContent = translations[currentLang].title;
       document.getElementById("error-message").textContent = translations[currentLang].message;
       document.getElementById("owner").textContent = translations[currentLang].owner;
+
+      document.getElementById("lang-select").value = currentLang;
     }
 
-    function changeLanguage(lang) {
-      currentLang = lang;
+    function switchLanguage(newLang) {
+      currentLang = newLang;
       applyText();
     }
 
-    // Apply on load
     applyText();
   </script>
 </body>
