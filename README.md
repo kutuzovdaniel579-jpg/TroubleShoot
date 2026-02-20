@@ -19,7 +19,7 @@ The page supports multiple languages and can be used for websites that are under
 ## 🔗 URL Structure
 
 Use the following structure to display dynamic error messages:
-https://kutuzovdaniel579-jpg.github.io/TroubleShoot/?lang=XXX?error_code=XXX?title=XXX?description=XXX?owner=XXX
+`https://kutuzovdaniel579-jpg.github.io/TroubleShoot/?lang=XXX?error_code=XXX?title=XXX?description=XXX?owner=XXX`
 
 > [!TIP]
 > By using `%20` u can create an spacing between words.
